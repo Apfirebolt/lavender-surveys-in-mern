@@ -1,8 +1,8 @@
 {
-  "name": "proshop2",
+  "name": "lavender-surveys",
   "version": "2.0.0",
   "type": "module",
-  "description": "Ecommerce application built with the MERN stack",
+  "description": "A polls and survey platform created in MERN stack",
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
@@ -13,7 +13,7 @@
     "data:destroy": "node backend/seeder -d",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
-  "author": "Brad Traversy",
+  "author": "Apfirebolt (Amit Prafulla)",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",

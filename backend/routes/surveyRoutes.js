@@ -6,18 +6,14 @@ import {
   createSurvey,
   updateSurvey,
   deleteSurvey,
-  createSurveyReview,
-  getTopSurveys,
 } from '../controllers/surveyController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
-router.route('/').get(getSurveys).post(protect, admin, createSurvey);
-router.route('/:id/reviews').post(protect, createSurveyReview);
-router.get('/top', getTopSurveys);
+router.route('/').get(getSurveys).post(protect, createSurvey);
 router
   .route('/:id')
   .get(getSurveyById)
-  .put(protect, admin, updateSurvey)
-  .delete(protect, admin, deleteSurvey);
+  .put(protect, updateSurvey)
+  .delete(protect, deleteSurvey);
 
 export default router;

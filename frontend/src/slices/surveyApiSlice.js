@@ -4,9 +4,8 @@ import { apiSlice } from './apiSlice';
 export const surveysApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSurveys: builder.query({
-      query: ({ keyword, pageNumber }) => ({
+      query: () => ({
         url: SURVEY_URL,
-        params: { keyword, pageNumber },
       }),
       keepUnusedDataFor: 5,
     }),
@@ -17,9 +16,10 @@ export const surveysApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     createSurvey: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `${SURVEY_URL}`,
         method: 'POST',
+        body: data,
       }),
       invalidatesTags: ['Survey'],
     }),
@@ -31,31 +31,12 @@ export const surveysApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Survey'],
     }),
-    uploadSurveyImage: builder.mutation({
-      query: (data) => ({
-        url: `/api/upload`,
-        method: 'POST',
-        body: data,
-      }),
-    }),
     deleteSurvey: builder.mutation({
       query: (surveyId) => ({
         url: `${SURVEY_URL}/${surveyId}`,
         method: 'DELETE',
       }),
       providesTags: ['Survey'],
-    }),
-    createReview: builder.mutation({
-      query: (data) => ({
-        url: `${SURVEY_URL}/${data.surveyId}/reviews`,
-        method: 'POST',
-        body: data,
-      }),
-      invalidatesTags: ['Survey'],
-    }),
-    getTopSurveys: builder.query({
-      query: () => `${SURVEY_URL}/top`,
-      keepUnusedDataFor: 5,
     }),
   }),
 });
@@ -65,8 +46,5 @@ export const {
   useGetSurveyDetailsQuery,
   useCreateSurveyMutation,
   useUpdateSurveyMutation,
-  useUploadSurveyImageMutation,
   useDeleteSurveyMutation,
-  useCreateReviewMutation,
-  useGetTopSurveysQuery,
 } = surveysApiSlice;

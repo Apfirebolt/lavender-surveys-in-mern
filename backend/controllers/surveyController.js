@@ -41,16 +41,13 @@ const getSurveyById = asyncHandler(async (req, res) => {
 // @route   POST /api/surveys
 // @access  Private/Admin
 const createSurvey = asyncHandler(async (req, res) => {
+  const { title, category, description } =
+    req.body;
   const survey = new Survey({
-    name: 'Sample name',
-    price: 0,
+    title,
+    category,
     user: req.user._id,
-    image: '/images/sample.jpg',
-    brand: 'Sample brand',
-    category: 'Sample category',
-    countInStock: 0,
-    numReviews: 0,
-    description: 'Sample description',
+    description,
   });
 
   const createdSurvey = await survey.save();
@@ -61,19 +58,15 @@ const createSurvey = asyncHandler(async (req, res) => {
 // @route   PUT /api/surveys/:id
 // @access  Private/Admin
 const updateSurvey = asyncHandler(async (req, res) => {
-  const { name, price, description, image, brand, category, countInStock } =
+  const { name, category, description } =
     req.body;
 
   const survey = await Survey.findById(req.params.id);
 
   if (survey) {
     survey.name = name;
-    survey.price = price;
     survey.description = description;
-    survey.image = image;
-    survey.brand = brand;
     survey.category = category;
-    survey.countInStock = countInStock;
 
     const updatedSurvey = await survey.save();
     res.json(updatedSurvey);
@@ -98,55 +91,6 @@ const deleteSurvey = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Create new review
-// @route   POST /api/surveys/:id/reviews
-// @access  Private
-const createSurveyReview = asyncHandler(async (req, res) => {
-  const { rating, comment } = req.body;
-
-  const survey = await Survey.findById(req.params.id);
-
-  if (survey) {
-    const alreadyReviewed = survey.reviews.find(
-      (r) => r.user.toString() === req.user._id.toString()
-    );
-
-    if (alreadyReviewed) {
-      res.status(400);
-      throw new Error('Survey already reviewed');
-    }
-
-    const review = {
-      name: req.user.name,
-      rating: Number(rating),
-      comment,
-      user: req.user._id,
-    };
-
-    survey.reviews.push(review);
-
-    survey.numReviews = survey.reviews.length;
-
-    survey.rating =
-      survey.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      survey.reviews.length;
-
-    await survey.save();
-    res.status(201).json({ message: 'Review added' });
-  } else {
-    res.status(404);
-    throw new Error('Survey not found');
-  }
-});
-
-// @desc    Get top rated surveys
-// @route   GET /api/surveys/top
-// @access  Public
-const getTopSurveys = asyncHandler(async (req, res) => {
-  const surveys = await Survey.find({}).sort({ rating: -1 }).limit(3);
-
-  res.json(surveys);
-});
 
 export {
   getSurveys,
@@ -154,6 +98,4 @@ export {
   createSurvey,
   updateSurvey,
   deleteSurvey,
-  createSurveyReview,
-  getTopSurveys,
 };

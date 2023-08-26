@@ -3,21 +3,27 @@ import { useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import AddQuestionModal from "../components/AddQuestionModal";
 import Meta from "../components/Meta";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   useGetSurveyDetailsQuery,
   useUpdateSurveyMutation,
-  useDeleteSurveyMutation
+  useDeleteSurveyMutation,
 } from "../slices/surveyApiSlice";
 
 const SurveyDetailScreen = () => {
   const { id } = useParams();
 
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+
+  // Modal show
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -59,10 +65,14 @@ const SurveyDetailScreen = () => {
     try {
       await deleteSurvey(survey._id).unwrap();
       toast.success("Survey deleted successfully");
-    }
-    catch (err) {
+    } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
+  };
+
+  const addQuestionHandler = async (e) => {
+    e.preventDefault();
+    console.log('Adding question ...')
   };
 
   console.log(survey);
@@ -115,11 +125,25 @@ const SurveyDetailScreen = () => {
             <Button type="submit" variant="primary">
               Update Survey
             </Button>
-            <Button className="mx-2" type="button" variant="danger" onClick={(e) => deleteHandler(e)}>
+            <Button
+              className="mx-2"
+              type="button"
+              variant="danger"
+              onClick={(e) => deleteHandler(e)}
+            >
               Delete
+            </Button>
+            <Button className="mx-2" variant="primary" onClick={handleShow}>
+              Add Question
             </Button>
             {loadingUpdateSurvey && <Loader />}
           </Form>
+
+          <AddQuestionModal
+            show={show}
+            handleClose={handleClose}
+            addQuestionUtil={addQuestionHandler}
+          />
         </>
       )}
     </>

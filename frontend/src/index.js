@@ -17,6 +17,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import AddSurveyScreen from './screens/AddSurveyScreen';
+import MySurveyScreen from './screens/MySurveysScreen';
 import SurveyDetailScreen from './screens/SurveyDetailScreen';
 import PrivateRoute from './components/PrivateRoute';
 import store from './store';
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       {/* Registered users */}
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<ProfileScreen />} />
+        <Route path='/my-surveys' element={<MySurveyScreen />} />
         <Route path='/add-survey' element={<AddSurveyScreen />} />
         <Route path='/survey/:id' element={<SurveyDetailScreen />} />
       </Route>

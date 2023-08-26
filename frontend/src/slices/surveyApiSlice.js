@@ -11,8 +11,8 @@ export const surveysApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     getSurveyDetails: builder.query({
-      query: (SurveyId) => ({
-        url: `${SURVEY_URL}/${SurveyId}`,
+      query: (surveyId) => ({
+        url: `${SURVEY_URL}/${surveyId}`,
       }),
       keepUnusedDataFor: 5,
     }),
@@ -25,7 +25,7 @@ export const surveysApiSlice = apiSlice.injectEndpoints({
     }),
     updateSurvey: builder.mutation({
       query: (data) => ({
-        url: `${SURVEY_URL}/${data.SurveyId}`,
+        url: `${SURVEY_URL}/${data.surveyId}`,
         method: 'PUT',
         body: data,
       }),
@@ -39,15 +39,15 @@ export const surveysApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteSurvey: builder.mutation({
-      query: (SurveyId) => ({
-        url: `${SURVEY_URL}/${SurveyId}`,
+      query: (surveyId) => ({
+        url: `${SURVEY_URL}/${surveyId}`,
         method: 'DELETE',
       }),
       providesTags: ['Survey'],
     }),
     createReview: builder.mutation({
       query: (data) => ({
-        url: `${SURVEY_URL}/${data.SurveyId}/reviews`,
+        url: `${SURVEY_URL}/${data.surveyId}/reviews`,
         method: 'POST',
         body: data,
       }),

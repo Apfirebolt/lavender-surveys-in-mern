@@ -25,7 +25,7 @@ export const surveysApiSlice = apiSlice.injectEndpoints({
     }),
     updateSurvey: builder.mutation({
       query: (data) => ({
-        url: `${SURVEY_URL}/${data.surveyId}`,
+        url: `${SURVEY_URL}/${data._id}`,
         method: 'PUT',
         body: data,
       }),

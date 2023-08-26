@@ -58,15 +58,15 @@ const createSurvey = asyncHandler(async (req, res) => {
 // @route   PUT /api/surveys/:id
 // @access  Private/Admin
 const updateSurvey = asyncHandler(async (req, res) => {
-  const { name, category, description } =
+  const { title, category, description } =
     req.body;
 
   const survey = await Survey.findById(req.params.id);
-
+  
   if (survey) {
-    survey.name = name;
-    survey.description = description;
-    survey.category = category;
+    survey.title = title || survey.title;
+    survey.description = description || survey.description;
+    survey.category = category || survey.category;
 
     const updatedSurvey = await survey.save();
     res.json(updatedSurvey);
